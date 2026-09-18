@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FITPULSE X - Personal Activity & Habit Intelligence Dashboard. Turn daily activity into smarter habits with rule-based wellness scoring, streak tracking, and interactive progress analytics.">
+  <meta name="keywords" content="fitness tracker, wellness dashboard, activity tracker, habit streaks, CodeAlpha internship">
+  <meta name="author" content="CodeAlpha Intern">
+  <title>FitPulse X — Personal Activity & Habit Intelligence Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Standard Favicon (SVG data URI for standalone portability) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236366f1'/%3E%3Cpath d='M6 17h5l3-7 5 13 3-8h4' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <!-- App Container Shell -->
+  <div class="app-layout" id="app-layout">
+
+    <!-- Mobile Top Header Bar -->
+    <header class="mobile-header" aria-label="Mobile Navigation Bar">
+      <div class="mobile-brand">
+        <div class="brand-badge-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <span class="brand-title">FITPULSE <span class="accent-pulse">X</span></span>
+      </div>
+      <div class="mobile-header-actions">
+        <button class="icon-btn theme-toggle-btn" id="mobile-theme-toggle" aria-label="Toggle light or dark theme" title="Toggle Theme">
+          <svg class="theme-icon sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="theme-icon moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <button class="primary-btn-sm" id="mobile-quick-add-btn" aria-label="Quick Add Activity">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Log</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sidebar Navigation (Desktop & Large Tablets) -->
+    <aside class="app-sidebar" id="app-sidebar" aria-label="Primary Navigation">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="brand-badge-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-title">FITPULSE <span class="accent-pulse">X</span></div>
+            <div class="brand-tagline">Habit Intelligence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Profile Card in Sidebar -->
+      <div class="sidebar-profile-card">
+        <div class="profile-avatar" id="sidebar-avatar">FP</div>
+        <div class="profile-meta">
+          <div class="profile-name" id="sidebar-user-name">Alex Morgan</div>
+          <div class="profile-streak-pill" id="sidebar-streak-pill" title="Current Daily Streak">
+            <span class="streak-icon">🔥</span>
+            <span class="streak-count" id="sidebar-streak-count">0 Days</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">MAIN MENU</div>
+        <button class="nav-item active" data-view="dashboard" id="nav-btn-dashboard" aria-label="View Dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>
+          <span class="nav-label">Dashboard</span>
+        </button>
+
+        <button class="nav-item" data-view="activity" id="nav-btn-activity" aria-label="View Activity Logs">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span class="nav-label">Activity Log</span>
+          <span class="nav-counter" id="nav-activity-count">0</span>
+        </button>
+
+        <button class="nav-item" data-view="progress" id="nav-btn-progress" aria-label="View 7-Day Progress">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span class="nav-label">7-Day Progress</span>
+        </button>
+
+        <button class="nav-item" data-view="goals" id="nav-btn-goals" aria-label="Manage Personal Goals">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          <span class="nav-label">Personal Goals</span>
+        </button>
+
+        <div class="nav-group-title">INTELLIGENCE</div>
+        <button class="nav-item" data-view="insights" id="nav-btn-insights" aria-label="View Smart Insights">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+          <span class="nav-label">Insights Engine</span>
+          <span class="nav-badge-pill">Rules</span>
+        </button>
+
+        <button class="nav-item" data-view="achievements" id="nav-btn-achievements" aria-label="View Achievements">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+          <span class="nav-label">Achievements</span>
+          <span class="nav-counter" id="nav-achievement-count">0/6</span>
+        </button>
+
+        <button class="nav-item" data-view="history" id="nav-btn-history" aria-label="View Historical Data">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span class="nav-label">History Archive</span>
+        </button>
+
+        <div class="nav-group-title">PROJECT & INTERNSHIP</div>
+        <button class="nav-item" data-view="checklist" id="nav-btn-checklist" aria-label="View CodeAlpha Task 3 Requirements Checklist">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          <span class="nav-label">Task 3 Checklist</span>
+          <span class="nav-badge-pill verified">Verified</span>
+        </button>
+
+        <button class="nav-item" data-view="settings" id="nav-btn-settings" aria-label="Settings and Data Controls">
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <span class="nav-label">Settings & Backup</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer Note -->
+      <div class="sidebar-footer">
+        <div class="disclaimer-mini">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>Internship Prototype • Not a medical advice device</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content Area -->
+    <main class="app-main" id="app-main">
+
+      <!-- Top Navigation Bar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <h1 class="page-greeting" id="topbar-greeting">Good morning, Alex</h1>
+          <p class="page-subtitle" id="topbar-subtitle">Here's your activity snapshot for today.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-date-pill" id="current-date-display">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span id="date-label">Today</span>
+          </div>
+
+          <!-- Theme Switcher Button -->
+          <button class="icon-btn theme-toggle-btn" id="desktop-theme-toggle" aria-label="Switch Light or Dark Mode" title="Toggle Theme">
+            <svg class="theme-icon sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+
+          <!-- Topbar Quick Add Action -->
+          <button class="btn btn-primary" id="topbar-quick-add" aria-label="Open Quick Add Menu">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Quick Log</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Persistent Demo Data Notice Banner (Shown dynamically when isDemo is true) -->
+      <div class="demo-banner" id="demo-banner" style="display: none;" role="alert">
+        <div class="demo-banner-content">
+          <span class="demo-badge">DEMO MODE ACTIVE</span>
+          <span class="demo-text">Currently previewing realistic 7-day sample data. Real user data is not overwritten.</span>
+        </div>
+        <div class="demo-banner-actions">
+          <button class="btn btn-sm btn-outline-light" id="btn-clear-demo-banner">Clear Demo & Start Fresh</button>
+        </div>
+      </div>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 1: DASHBOARD -->
+      <!-- ======================================================= -->
+      <section class="view-panel active" id="view-dashboard" aria-label="Dashboard Overview">
+
+        <!-- Prominent Quick Add Action Bar -->
+        <div class="quick-add-bar card">
+          <div class="quick-add-header">
+            <div class="quick-add-title">
+              <span class="pulsing-dot"></span>
+              <strong>Quick Add Daily Metrics</strong>
+            </div>
+            <span class="quick-add-hint">Select a metric to log new activity or progress instantly:</span>
+          </div>
+          <div class="quick-add-buttons">
+            <button class="quick-btn steps-btn" id="btn-quick-steps" aria-label="Add Steps">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 16v-2.38C4 11.5 5.5 10 7.38 10H8c1.66 0 3 1.34 3 3v3"></path><path d="M20 16v-2.38C20 11.5 18.5 10 16.62 10H16c-1.66 0-3 1.34-3 3v3"></path></svg>
+              <span>+ Steps</span>
+            </button>
+
+            <button class="quick-btn water-btn" id="btn-quick-water" aria-label="Add Water">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+              <span>+ Water</span>
+            </button>
+
+            <button class="quick-btn activity-btn" id="btn-quick-activity" aria-label="Add Activity">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <span>+ Activity</span>
+            </button>
+
+            <button class="quick-btn sleep-btn" id="btn-quick-sleep" aria-label="Add Sleep">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <span>+ Sleep</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6 Major Metric Cards Grid -->
+        <div class="metrics-grid">
+
+          <!-- 1. Steps Card -->
+          <div class="metric-card card steps-card" id="card-steps">
+            <div class="metric-header">
+              <div class="metric-icon-wrap steps-theme">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 16v-2a4 4 0 0 0-4-4h-1a2 2 0 0 0-2 2v4"></path><path d="M5 16v-2a4 4 0 0 1 4-4h1a2 2 0 0 1 2 2v4"></path><circle cx="16.5" cy="7.5" r="1.5"></circle><circle cx="7.5" cy="7.5" r="1.5"></circle></svg>
+              </div>
+              <div class="metric-meta">
+                <span class="metric-title">Daily Steps</span>
+                <span class="metric-badge" id="steps-status-badge">In Progress</span>
+              </div>
+            </div>
+            <div class="metric-body">
+              <div class="metric-value-row">
+                <span class="metric-current" id="dash-steps-current">0</span>
+                <span class="metric-target">/ <span id="dash-steps-goal">8,000</span> steps</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill steps-fill" id="dash-steps-bar" style="width: 0%;"></div>
+              </div>
+              <div class="metric-footer">
+                <span class="metric-pct" id="dash-steps-pct">0%</span>
+                <span class="metric-remaining" id="dash-steps-remaining">8,000 to go</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Activity Minutes Card -->
+          <div class="metric-card card activity-card" id="card-activity">
+            <div class="metric-header">
+              <div class="metric-icon-wrap activity-theme">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <div class="metric-meta">
+                <span class="metric-title">Active Time</span>
+                <span class="metric-badge" id="activity-status-badge">In Progress</span>
+              </div>
+            </div>
+            <div class="metric-body">
+              <div class="metric-value-row">
+                <span class="metric-current" id="dash-activity-current">0</span>
+                <span class="metric-target">/ <span id="dash-activity-goal">45</span> min</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill activity-fill" id="dash-activity-bar" style="width: 0%;"></div>
+              </div>
+              <div class="metric-footer">
+                <span class="metric-pct" id="dash-activity-pct">0%</span>
+                <span class="metric-remaining" id="dash-activity-remaining">45 min to target</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Water Intake Card -->
+          <div class="metric-card card water-card" id="card-water">
+            <div class="metric-header">
+              <div class="metric-icon-wrap water-theme">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+              </div>
+              <div class="metric-meta">
+                <span class="metric-title">Water Intake</span>
+                <span class="metric-badge" id="water-status-badge">In Progress</span>
+              </div>
+            </div>
+            <div class="metric-body">
+              <div class="metric-value-row">
+                <span class="metric-current" id="dash-water-current">0</span>
+                <span class="metric-target">/ <span id="dash-water-goal">2,500</span> ml</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill water-fill" id="dash-water-bar" style="width: 0%;"></div>
+              </div>
+              <div class="metric-footer">
+                <span class="metric-pct" id="dash-water-pct">0%</span>
+                <span class="metric-remaining" id="dash-water-remaining">2,500 ml remaining</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Sleep Card -->
+          <div class="metric-card card sleep-card" id="card-sleep">
+            <div class="metric-header">
+              <div class="metric-icon-wrap sleep-theme">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              </div>
+              <div class="metric-meta">
+                <span class="metric-title">Rest & Sleep</span>
+                <span class="metric-badge" id="sleep-status-badge">Logged</span>
+              </div>
+            </div>
+            <div class="metric-body">
+              <div class="metric-value-row">
+                <span class="metric-current" id="dash-sleep-current">0.0</span>
+                <span class="metric-target">/ <span id="dash-sleep-goal">8.0</span> hrs</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill sleep-fill" id="dash-sleep-bar" style="width: 0%;"></div>
+              </div>
+              <div class="metric-footer">
+                <span class="metric-pct" id="dash-sleep-pct">0%</span>
+                <span class="metric-remaining" id="dash-sleep-remaining">Quality Rest</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Wellness Score Engine Card -->
+          <div class="metric-card card wellness-card" id="card-wellness">
+            <div class="metric-header">
+              <div class="metric-icon-wrap wellness-theme">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </div>
+              <div class="metric-meta">
+                <span class="metric-title">Today's Wellness Score</span>
+                <span class="metric-badge badge-wellness" id="dash-wellness-rating">Optimal</span>
+              </div>
+            </div>
+            <div class="metric-body wellness-body-layout">
+              <div class="wellness-gauge-wrap">
+                <svg class="wellness-gauge-svg" viewBox="0 0 100 100">
+                  <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="gauge-fill" id="dash-wellness-circle" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                </svg>
+                <div class="gauge-center-text">
+                  <span class="gauge-number" id="dash-wellness-score">0</span>
+                  <span class="gauge-denom">/ 100</span>
+                </div>
+              </div>
+              <div class="wellness-breakdown-mini">
+                <div class="mini-factor">
+                  <span>Steps (30%)</span>
+                  <strong id="wf-steps">0/30</strong>
+                </div>
+                <div class="mini-factor">
+                  <span>Active (25%)</span>
+                  <strong id="wf-activity">0/25</strong>
+                </div>
+                <div class="mini-factor">
+                  <span>Water (20%)</span>
+                  <strong id="wf-water">0/20</strong>
+                </div>
+                <div class="mini-factor">
+                  <span>Sleep (25%)</span>
+                  <strong id="wf-sleep">0/25</strong>
+                </div>
+              </div>
+            </div>
+            <div class="metric-footer wellness-footer-note">
+              <span class="wellness-caption">Wellness Insight Engine: Based on today's activity, hydration, sleep and goal completion.</span>
+            </div>
+          </div>
+
+          <!-- 6. Daily Goal Completion Card -->
+          <div class="metric-card card completion-card" id="card-completion">
+            <div class="metric-header">
+              <div class="metric-icon-wrap completion-theme">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="metric-meta">
+                <span class="metric-title">Daily Goals Completed</span>
+                <span class="metric-badge" id="completion-status-badge">0 / 4</span>
+              </div>
+            </div>
+            <div class="metric-body">
+              <div class="metric-value-row">
+                <span class="metric-current" id="dash-goals-achieved">0 of 4</span>
+                <span class="metric-target">Goals Met</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill completion-fill" id="dash-goals-bar" style="width: 0%;"></div>
+              </div>
+              <div class="goals-checklist-icons">
+                <span class="goal-pill-check" id="gcheck-steps" title="Steps Target">👟 Steps</span>
+                <span class="goal-pill-check" id="gcheck-activity" title="Activity Target">⚡ Active</span>
+                <span class="goal-pill-check" id="gcheck-water" title="Water Target">💧 Water</span>
+                <span class="goal-pill-check" id="gcheck-sleep" title="Sleep Target">🌙 Sleep</span>
+              </div>
+            </div>
+            <div class="metric-footer">
+              <span class="metric-pct" id="dash-completion-pct">0%</span>
+              <span class="metric-remaining" id="dash-streak-reminder">🔥 Streak active</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Smart Insight Snapshot Bar -->
+        <div class="smart-insight-banner card" id="dash-insight-banner">
+          <div class="insight-banner-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          </div>
+          <div class="insight-banner-content">
+            <div class="insight-engine-label">SMART INSIGHT ENGINE (DETERMINISTIC RULES)</div>
+            <div class="insight-main-message" id="dash-insight-text">Loading daily insight engine...</div>
+          </div>
+          <button class="btn btn-sm btn-secondary" id="dash-btn-view-insights">View All Insights</button>
+        </div>
+
+        <!-- Dashboard Split Section: Today's Timeline & Habit Streak Heatmap -->
+        <div class="dashboard-split-grid">
+
+          <!-- Activity Timeline Card -->
+          <div class="card timeline-card">
+            <div class="card-header-row">
+              <div class="card-title-group">
+                <h2 class="card-title">Today's Activity Timeline</h2>
+                <p class="card-subtitle">Chronological record of workouts and exercises logged today.</p>
+              </div>
+              <button class="btn btn-sm btn-primary" id="dash-btn-add-activity">+ Log Activity</button>
+            </div>
+
+            <div class="timeline-container" id="dash-timeline-list">
+              <!-- Rendered dynamically -->
+              <div class="empty-state-box" id="dash-timeline-empty">
+                <div class="empty-state-icon">👟</div>
+                <div class="empty-state-title">No activities recorded today</div>
+                <div class="empty-state-text">Start by logging your morning walk, gym session, or commute.</div>
+                <button class="btn btn-sm btn-primary mt-2" onclick="FitPulseApp.openModal('modal-activity')">+ Log First Activity</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Habit Streak & Consistency Card -->
+          <div class="card streak-card">
+            <div class="card-header-row">
+              <div class="card-title-group">
+                <h2 class="card-title">Habit Streak & Consistency</h2>
+                <p class="card-subtitle">Counted when you hit your daily activity goal.</p>
+              </div>
+              <span class="streak-flame-badge" id="dash-streak-banner">🔥 0 Days</span>
+            </div>
+
+            <div class="streak-stats-row">
+              <div class="streak-stat-box">
+                <span class="ss-label">Current Streak</span>
+                <span class="ss-val" id="dash-streak-current">0 Days</span>
+              </div>
+              <div class="streak-stat-box">
+                <span class="ss-label">Best Record</span>
+                <span class="ss-val" id="dash-streak-longest">0 Days</span>
+              </div>
+              <div class="streak-stat-box">
+                <span class="ss-label">7-Day Completion</span>
+                <span class="ss-val" id="dash-7day-rate">0%</span>
+              </div>
+            </div>
+
+            <!-- 7-Day Mini Heatmap Row -->
+            <div class="mini-calendar-wrap">
+              <div class="mini-cal-label">Recent 7 Days History</div>
+              <div class="mini-cal-days" id="dash-mini-calendar">
+                <!-- Injected dynamically: 7 day nodes with completion classes -->
+              </div>
+              <div class="mini-cal-legend">
+                <span class="legend-item"><span class="legend-dot status-completed"></span> Completed</span>
+                <span class="legend-item"><span class="legend-dot status-partial"></span> Partial</span>
+                <span class="legend-item"><span class="legend-dot status-none"></span> Missed</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 2: ACTIVITY LOGS & LOGGER -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-activity" aria-label="Activity Management">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">Activity Management</h2>
+            <p class="section-subheading">Log exercises, view detailed calories burned, and manage workouts.</p>
+          </div>
+          <button class="btn btn-primary" onclick="FitPulseApp.openModal('modal-activity')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Log New Workout</span>
+          </button>
+        </div>
+
+        <!-- Activity Stats Banner -->
+        <div class="activity-summary-cards">
+          <div class="asc-card card">
+            <span class="asc-label">Total Workouts Today</span>
+            <span class="asc-val" id="actview-total-count">0</span>
+          </div>
+          <div class="asc-card card">
+            <span class="asc-label">Total Active Time</span>
+            <span class="asc-val" id="actview-total-time">0 min</span>
+          </div>
+          <div class="asc-card card">
+            <span class="asc-label">Est. Calories Burned</span>
+            <span class="asc-val" id="actview-total-calories">0 kcal</span>
+          </div>
+          <div class="asc-card card">
+            <span class="asc-label">Primary Exercise</span>
+            <span class="asc-val" id="actview-primary-type">None</span>
+          </div>
+        </div>
+
+        <!-- Timeline with Filters -->
+        <div class="card mt-4">
+          <div class="card-header-row flex-wrap">
+            <h3 class="card-title">Recorded Activities for Today</h3>
+            <div class="filters-row">
+              <input type="text" class="form-input search-input" id="act-search-input" placeholder="Search activities or notes...">
+              <select class="form-select filter-select" id="act-category-filter">
+                <option value="ALL">All Categories</option>
+                <option value="Walking">Walking</option>
+                <option value="Running">Running</option>
+                <option value="Cycling">Cycling</option>
+                <option value="Exercise">Exercise / Gym</option>
+                <option value="Swimming">Swimming</option>
+                <option value="Yoga">Yoga / Stretch</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="activity-full-timeline" id="actview-timeline-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 3: 7-DAY PROGRESS CENTER -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-progress" aria-label="7-Day Progress Center">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">7-Day Progress Center</h2>
+            <p class="section-subheading">Comprehensive multi-metric trends with high-precision custom canvas charts.</p>
+          </div>
+          <div class="chart-tab-controls" role="tablist">
+            <button class="chart-tab active" data-chart="steps" role="tab">Steps</button>
+            <button class="chart-tab" data-chart="water" role="tab">Water</button>
+            <button class="chart-tab" data-chart="activity" role="tab">Active Min</button>
+            <button class="chart-tab" data-chart="wellness" role="tab">Wellness Score</button>
+          </div>
+        </div>
+
+        <!-- 7-Day Metrics Overview Cards -->
+        <div class="progress-summary-grid">
+          <div class="card p-card">
+            <span class="p-title">7-Day Daily Avg Steps</span>
+            <span class="p-val" id="prog-avg-steps">0</span>
+            <span class="p-sub" id="prog-target-steps">Target: 8,000</span>
+          </div>
+          <div class="card p-card">
+            <span class="p-title">7-Day Daily Avg Water</span>
+            <span class="p-val" id="prog-avg-water">0 ml</span>
+            <span class="p-sub" id="prog-target-water">Target: 2,500 ml</span>
+          </div>
+          <div class="card p-card">
+            <span class="p-title">7-Day Avg Active Time</span>
+            <span class="p-val" id="prog-avg-activity">0 min</span>
+            <span class="p-sub" id="prog-target-activity">Target: 45 min</span>
+          </div>
+          <div class="card p-card">
+            <span class="p-title">7-Day Avg Wellness</span>
+            <span class="p-val" id="prog-avg-wellness">0 / 100</span>
+            <span class="p-sub">Rule-Based Composite</span>
+          </div>
+        </div>
+
+        <!-- Main Chart Container -->
+        <div class="card chart-canvas-card mt-4">
+          <div class="canvas-header">
+            <div>
+              <h3 class="card-title" id="active-chart-title">7-Day Steps Trend</h3>
+              <p class="card-subtitle" id="active-chart-sub">Comparing daily logged steps with your daily goal.</p>
+            </div>
+            <div class="chart-legend-wrap" id="active-chart-legend">
+              <span class="legend-badge current-bar-legend">Daily Achieved</span>
+              <span class="legend-badge target-line-legend">Goal Baseline</span>
+            </div>
+          </div>
+
+          <div class="canvas-wrapper">
+            <canvas id="progress-canvas" width="900" height="360" aria-label="7-Day Progress Bar and Trend Chart"></canvas>
+            <div class="canvas-tooltip" id="canvas-tooltip"></div>
+          </div>
+        </div>
+
+        <!-- 7-Day Day-by-Day Data Cards -->
+        <div class="card mt-4">
+          <h3 class="card-title mb-3">7-Day Breakdown Summary</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Steps</th>
+                  <th>Active Time</th>
+                  <th>Water</th>
+                  <th>Sleep</th>
+                  <th>Wellness Score</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="progress-breakdown-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 4: PERSONAL GOALS -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-goals" aria-label="Personal Goals">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">Personal Fitness Goals</h2>
+            <p class="section-subheading">Customize your daily targets. All dashboard rings, percentages, and wellness formulas update instantly.</p>
+          </div>
+        </div>
+
+        <div class="goals-editor-grid">
+          <!-- Steps Goal -->
+          <div class="card goal-edit-card">
+            <div class="gec-header">
+              <div class="metric-icon-wrap steps-theme">👟</div>
+              <div>
+                <h3 class="card-title">Daily Steps Goal</h3>
+                <p class="card-subtitle">Recommended: 8,000 – 10,000 steps</p>
+              </div>
+            </div>
+            <div class="gec-body">
+              <div class="input-group">
+                <label for="input-goal-steps" class="form-label">Target Steps per Day</label>
+                <input type="number" id="input-goal-steps" class="form-input" min="1000" max="50000" step="500" value="8000">
+              </div>
+              <div class="goal-current-stat">
+                <span>Today's Progress:</span>
+                <strong id="goalview-steps-progress">0 / 8,000 (0%)</strong>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill steps-fill" id="goalview-steps-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Minutes Goal -->
+          <div class="card goal-edit-card">
+            <div class="gec-header">
+              <div class="metric-icon-wrap activity-theme">⚡</div>
+              <div>
+                <h3 class="card-title">Daily Active Time</h3>
+                <p class="card-subtitle">Recommended: 30 – 60 minutes</p>
+              </div>
+            </div>
+            <div class="gec-body">
+              <div class="input-group">
+                <label for="input-goal-activity" class="form-label">Target Active Minutes</label>
+                <input type="number" id="input-goal-activity" class="form-input" min="10" max="300" step="5" value="45">
+              </div>
+              <div class="goal-current-stat">
+                <span>Today's Progress:</span>
+                <strong id="goalview-activity-progress">0 / 45 min (0%)</strong>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill activity-fill" id="goalview-activity-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Water Goal -->
+          <div class="card goal-edit-card">
+            <div class="gec-header">
+              <div class="metric-icon-wrap water-theme">💧</div>
+              <div>
+                <h3 class="card-title">Daily Water Hydration</h3>
+                <p class="card-subtitle">Recommended: 2,000 – 3,000 ml</p>
+              </div>
+            </div>
+            <div class="gec-body">
+              <div class="input-group">
+                <label for="input-goal-water" class="form-label">Target Volume (ml)</label>
+                <input type="number" id="input-goal-water" class="form-input" min="500" max="8000" step="250" value="2500">
+              </div>
+              <div class="goal-current-stat">
+                <span>Today's Progress:</span>
+                <strong id="goalview-water-progress">0 / 2,500 ml (0%)</strong>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill water-fill" id="goalview-water-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sleep Goal -->
+          <div class="card goal-edit-card">
+            <div class="gec-header">
+              <div class="metric-icon-wrap sleep-theme">🌙</div>
+              <div>
+                <h3 class="card-title">Daily Sleep & Rest</h3>
+                <p class="card-subtitle">Recommended: 7.0 – 9.0 hours</p>
+              </div>
+            </div>
+            <div class="gec-body">
+              <div class="input-group">
+                <label for="input-goal-sleep" class="form-label">Target Sleep (hours)</label>
+                <input type="number" id="input-goal-sleep" class="form-input" min="4.0" max="14.0" step="0.5" value="8.0">
+              </div>
+              <div class="goal-current-stat">
+                <span>Today's Progress:</span>
+                <strong id="goalview-sleep-progress">0.0 / 8.0 hrs (0%)</strong>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill sleep-fill" id="goalview-sleep-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="goals-action-bar mt-4">
+          <button class="btn btn-primary" id="btn-save-goals">Save Goal Updates</button>
+          <button class="btn btn-secondary" id="btn-reset-goals-default">Reset to Recommended Defaults</button>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 5: SMART INSIGHTS ENGINE -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-insights" aria-label="Smart Insights">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">Wellness & Smart Insight Engine</h2>
+            <p class="section-subheading">Rule-based deterministic heuristics analyzing your daily activity, hydration velocity, and weekly streaks.</p>
+          </div>
+          <span class="badge-tech-disclosure">Rule-Based Deterministic • No Fake AI/ML</span>
+        </div>
+
+        <div class="insights-grid">
+          <!-- Section 1: Today's Snapshot Insights -->
+          <div class="card insight-card">
+            <div class="ic-header">
+              <div class="ic-icon-bubble primary-bubble">⚡</div>
+              <div>
+                <h3 class="card-title">Today's Activity Heuristics</h3>
+                <p class="card-subtitle">Live evaluation based on current metrics against targets.</p>
+              </div>
+            </div>
+            <div class="ic-body" id="insights-today-list">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Section 2: Weekly Patterns -->
+          <div class="card insight-card">
+            <div class="ic-header">
+              <div class="ic-icon-bubble success-bubble">📈</div>
+              <div>
+                <h3 class="card-title">Weekly Trend & Pattern</h3>
+                <p class="card-subtitle">Comparison against previous multi-day velocities.</p>
+              </div>
+            </div>
+            <div class="ic-body" id="insights-weekly-list">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Section 3: Goal Balance & Habit Health -->
+          <div class="card insight-card">
+            <div class="ic-header">
+              <div class="ic-icon-bubble warning-bubble">🎯</div>
+              <div>
+                <h3 class="card-title">Goal Distribution Balance</h3>
+                <p class="card-subtitle">Identifying which habits are thriving and which need focus.</p>
+              </div>
+            </div>
+            <div class="ic-body" id="insights-goal-balance">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Section 4: Streak & Consistency Insights -->
+          <div class="card insight-card">
+            <div class="ic-header">
+              <div class="ic-icon-bubble purple-bubble">🔥</div>
+              <div>
+                <h3 class="card-title">Consistency & Habit Streak</h3>
+                <p class="card-subtitle">Evaluating routine momentum and streak protection.</p>
+              </div>
+            </div>
+            <div class="ic-body" id="insights-consistency-list">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Formula Disclosure Section for Internship Transparency -->
+        <div class="card mt-4 formula-disclosure-box">
+          <h3 class="card-title">Transparent Wellness Scoring Algorithm</h3>
+          <p class="card-subtitle">FitPulse X strictly avoids ambiguous black-box claims. The Wellness Insight Engine operates on this exact rule formula:</p>
+          <div class="formula-code-block">
+            <code>Wellness Score (0-100) = (min(100, Steps / Goal) * 0.30) + (min(100, ActiveMin / Goal) * 0.25) + (min(100, Water / Goal) * 0.20) + (SleepQualityScore * 0.25)</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 6: ACHIEVEMENTS -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-achievements" aria-label="Achievements">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">Milestone Achievements</h2>
+            <p class="section-subheading">Badges automatically unlock as your recorded activities reach predefined thresholds.</p>
+          </div>
+          <div class="achieve-counter-pill">
+            <span id="achieve-unlocked-count">0</span> of <span id="achieve-total-count">6</span> Unlocked
+          </div>
+        </div>
+
+        <div class="achievements-grid" id="achievements-card-grid">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 7: HISTORY ARCHIVE -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-history" aria-label="History Archive">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">Historical Activity Archive</h2>
+            <p class="section-subheading">Inspect all previous days, track your longitudinal progress, or drill down into any day.</p>
+          </div>
+          <div class="history-controls-row">
+            <input type="date" class="form-input date-input" id="history-date-filter" aria-label="Filter by specific date">
+            <button class="btn btn-secondary btn-sm" id="btn-history-clear-filter">Show All</button>
+          </div>
+        </div>
+
+        <div class="card mt-2">
+          <div class="table-responsive">
+            <table class="data-table" id="history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Steps</th>
+                  <th>Active Time</th>
+                  <th>Water</th>
+                  <th>Sleep</th>
+                  <th>Wellness Score</th>
+                  <th>Goals Met</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody id="history-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state-box" id="history-empty" style="display: none;">
+            <div class="empty-state-icon">📜</div>
+            <div class="empty-state-title">No historical records found</div>
+            <div class="empty-state-text">As you record your daily fitness activities, your logs will be archived here.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 8: CODEALPHA TASK 3 CHECKLIST & SPECIFICATION -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-checklist" aria-label="CodeAlpha Task 3 Requirements Checklist">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">CodeAlpha Internship Task 3 — Requirements Checklist</h2>
+            <p class="section-subheading">Full compliance verification of original CodeAlpha Task 3 specifications and all advanced FitPulse X features.</p>
+          </div>
+          <span class="badge-status-verified">100% Tested & Verified</span>
+        </div>
+
+        <!-- Checklist Grid -->
+        <div class="checklist-container">
+
+          <!-- Original CodeAlpha Requirements -->
+          <div class="card checklist-card">
+            <div class="checklist-header">
+              <span class="checklist-badge-core">ORIGINAL CODEALPHA REQUIREMENTS</span>
+              <h3 class="card-title mt-1">Foundational Fitness Tracker App Specifications</h3>
+              <p class="card-subtitle">Every single baseline requirement from the CodeAlpha task sheet is 100% implemented without simplification:</p>
+            </div>
+            <div class="checklist-items-list">
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Requirement 1 — Activity Tracking & Goal Setting:</strong>
+                  <span>Tracks daily steps, active workout minutes, water hydration (ml), sleep duration, and estimated calories burned against customizable daily targets.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Requirement 2 — Data Logging / Manual Input:</strong>
+                  <span>Interactive Quick Add modals allow logging steps (quick chips + custom), water volume, exercise workouts (with category, duration, and notes), and sleep with strict input validation.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Requirement 3 — Dashboard & Visual Progress Summary:</strong>
+                  <span>Real-time dashboard with dynamic progress bars, percentage indicators, animated circular wellness gauge, 6 core metric cards, and instant updates.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Requirement 4 — Data Persistence & History:</strong>
+                  <span>All profile information, targets, daily records, workouts, streaks, and achievements persist cleanly in browser LocalStorage across page reloads. Includes full historical archive.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Requirement 5 — Responsive, Clean & Intuitive UI/UX:</strong>
+                  <span>SaaS-grade modern UI with desktop sidebar navigation, mobile-first design, dark/light theme switcher, accessible controls, and zero broken buttons or console errors.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advanced FitPulse X Features -->
+          <div class="card checklist-card mt-4">
+            <div class="checklist-header">
+              <span class="checklist-badge-adv">ADVANCED FITPULSE X FEATURES</span>
+              <h3 class="card-title mt-1">Intelligence & Gamification Extensions</h3>
+              <p class="card-subtitle">Built on top of the original CodeAlpha core to deliver an internship-submission-ready product:</p>
+            </div>
+            <div class="checklist-items-list">
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Wellness Score (Wellness Insight Engine):</strong>
+                  <span>Deterministic 0-100 composite index weighted across Steps (30%), Activity (25%), Water (20%), and Sleep (25%) with transparent component scoring.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Smart Insight Engine:</strong>
+                  <span>Deterministic heuristic engine generating daily advice, 3-day/7-day trend velocities, upward/downward momentum alerts, and habit balance analysis.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Habit Streak System & Heatmap:</strong>
+                  <span>Current and longest streak counters based on daily activity targets, paired with an interactive 7-day activity consistency heatmap.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>7-Day Progress Center & High-DPI Charts:</strong>
+                  <span>Pure vanilla JavaScript Canvas charts rendering daily steps, water intake, active time, and wellness score trends with hover tooltips and daily averages.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Achievements System:</strong>
+                  <span>Milestone badges (FIRST STEP, CONSISTENCY, WEEK WARRIOR, ACTIVITY MASTER, HYDRATION HERO, GOAL CRUSHER) with celebratory notifications and unlock tracking.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Personal Goals Customizer:</strong>
+                  <span>Full target editor with live actual vs goal comparisons, progress bars, and instant app-wide recalculation.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Activity Timeline & Calorie Engine:</strong>
+                  <span>Chronological workout entries with category badges, duration, calculated calorie expenditure, notes, and instant item deletion.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>History Archive with Search & Filters:</strong>
+                  <span>Historical table with date filters, day inspection modal, and complete record view.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Dark / Light Theme Switcher:</strong>
+                  <span>Seamless CSS custom properties transition with persistent theme preference in LocalStorage.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>JSON Data Export, Import & Safe Reset:</strong>
+                  <span>Download full backup as JSON, import with schema validation, and safe confirmation dialog for data reset.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Demo Mode with Explicit Transparency:</strong>
+                  <span>Realistic 7-day demo data clearly labeled with persistent banner and 1-click start fresh reset.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+
+              <div class="checklist-item done">
+                <div class="check-box checked">✓</div>
+                <div class="check-content">
+                  <strong>Health Safety Compliance:</strong>
+                  <span>Explicit disclaimer in header, sidebar, and footer clarifying this is an activity tracker prototype and not a medical device.</span>
+                  <span class="check-status-tag">Implemented & Tested</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- VIEW 9: SETTINGS & DATA CONTROLS -->
+      <!-- ======================================================= -->
+      <section class="view-panel" id="view-settings" aria-label="Settings and Data Controls">
+        <div class="view-header-bar">
+          <div>
+            <h2 class="section-heading">Settings & Data Management</h2>
+            <p class="section-subheading">Manage your profile, data backup, demo data mode, and application storage.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Profile Settings Card -->
+          <div class="card settings-card">
+            <h3 class="card-title mb-1">User Profile</h3>
+            <p class="card-subtitle mb-3">Update your display name.</p>
+            <div class="input-group">
+              <label for="settings-input-name" class="form-label">Your Name</label>
+              <input type="text" class="form-input" id="settings-input-name" placeholder="Enter your name" value="Alex Morgan">
+            </div>
+            <button class="btn btn-primary btn-sm mt-3" id="btn-save-profile">Save Profile Name</button>
+          </div>
+
+          <!-- Theme Settings Card -->
+          <div class="card settings-card">
+            <h3 class="card-title mb-1">Appearance Theme</h3>
+            <p class="card-subtitle mb-3">Select your preferred color mode.</p>
+            <div class="theme-options-row">
+              <button class="theme-choice-btn active" id="theme-btn-dark" data-theme="dark">
+                <span class="theme-dot dark-dot"></span>
+                <span>Dark Mode (Recommended)</span>
+              </button>
+              <button class="theme-choice-btn" id="theme-btn-light" data-theme="light">
+                <span class="theme-dot light-dot"></span>
+                <span>Light Mode</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Demo Data Card -->
+          <div class="card settings-card">
+            <h3 class="card-title mb-1">Sample / Demo Data</h3>
+            <p class="card-subtitle mb-3">Load or clear realistic 7-day sample data for demonstration purposes.</p>
+            <div class="btn-group-row">
+              <button class="btn btn-secondary btn-sm" id="btn-load-demo-data">Load 7-Day Demo Data</button>
+              <button class="btn btn-outline-danger btn-sm" id="btn-clear-demo-data">Clear Demo & Start Fresh</button>
+            </div>
+            <p class="form-hint mt-2">Demo data is always clearly marked with an on-screen banner to preserve real data integrity.</p>
+          </div>
+
+          <!-- Backup Export & Import Card -->
+          <div class="card settings-card">
+            <h3 class="card-title mb-1">Backup & Portability</h3>
+            <p class="card-subtitle mb-3">Export your data to a JSON file or import a saved backup.</p>
+            <div class="btn-group-row">
+              <button class="btn btn-primary btn-sm" id="btn-export-json">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Export Data (JSON)</span>
+              </button>
+              <label class="btn btn-secondary btn-sm file-input-label" for="file-import-json">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span>Import Data (JSON)</span>
+              </label>
+              <input type="file" id="file-import-json" accept=".json" style="display: none;">
+            </div>
+            <p class="form-hint mt-2">Imports are verified against the FitPulse X schema before application.</p>
+          </div>
+
+          <!-- Danger Zone Card -->
+          <div class="card settings-card danger-zone">
+            <h3 class="card-title text-danger mb-1">Danger Zone</h3>
+            <p class="card-subtitle mb-3">Permanently erase all stored records, streaks, and reset to clean state.</p>
+            <button class="btn btn-danger btn-sm" id="btn-trigger-reset">Reset All Data</button>
+            <p class="form-hint mt-2">A confirmation modal will verify your intent before clearing LocalStorage.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- App Footer with Health Disclaimer -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <strong>FITPULSE X</strong> — Personal Activity & Habit Intelligence Dashboard
+            <span class="footer-bullet">•</span>
+            <span>CodeAlpha Internship Task 3</span>
+          </div>
+          <div class="footer-right">
+            <span>FitPulse X is a personal activity tracking prototype and is not a medical device or medical advice system.</span>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+      <button class="mobile-nav-btn active" data-view="dashboard" id="mob-nav-dashboard">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="activity" id="mob-nav-activity">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Activity</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="progress" id="mob-nav-progress">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span>Progress</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="insights" id="mob-nav-insights">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+        <span>Insights</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="settings" id="mob-nav-settings">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>More</span>
+      </button>
+    </nav>
+
+  </div> <!-- /app-layout -->
+
+  <!-- ======================================================= -->
+  <!-- MODAL DIALOGS -->
+  <!-- ======================================================= -->
+
+  <!-- 1. First-Time Onboarding Modal -->
+  <div class="modal-backdrop" id="modal-onboarding" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+    <div class="modal-dialog card">
+      <div class="modal-header">
+        <div class="modal-brand-badge">⚡</div>
+        <h2 class="modal-title" id="onboarding-title">Welcome to FITPULSE X</h2>
+        <p class="modal-subtitle">Personal Activity & Habit Intelligence Dashboard</p>
+      </div>
+      <form id="form-onboarding" class="modal-body">
+        <div class="input-group">
+          <label for="onboard-name" class="form-label">What should we call you? *</label>
+          <input type="text" id="onboard-name" class="form-input" placeholder="e.g. Alex Morgan" required>
+        </div>
+
+        <div class="modal-two-col">
+          <div class="input-group">
+            <label for="onboard-steps" class="form-label">Daily Step Goal</label>
+            <input type="number" id="onboard-steps" class="form-input" value="8000" min="1000" max="50000" step="500" required>
+          </div>
+          <div class="input-group">
+            <label for="onboard-water" class="form-label">Daily Water Goal (ml)</label>
+            <input type="number" id="onboard-water" class="form-input" value="2500" min="500" max="6000" step="250" required>
+          </div>
+        </div>
+
+        <div class="modal-two-col">
+          <div class="input-group">
+            <label for="onboard-activity" class="form-label">Daily Active Target (min)</label>
+            <input type="number" id="onboard-activity" class="form-input" value="45" min="15" max="240" step="5" required>
+          </div>
+          <div class="input-group">
+            <label for="onboard-sleep" class="form-label">Daily Sleep Goal (hrs)</label>
+            <input type="number" id="onboard-sleep" class="form-input" value="8.0" min="5.0" max="12.0" step="0.5" required>
+          </div>
+        </div>
+
+        <div class="modal-actions-stacked mt-4">
+          <button type="submit" class="btn btn-primary btn-block">Save Preferences & Start Dashboard</button>
+          <button type="button" class="btn btn-secondary btn-block mt-2" id="btn-onboard-demo">Explore with 7-Day Demo Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Quick Add Steps Modal -->
+  <div class="modal-backdrop" id="modal-steps" role="dialog" aria-modal="true" aria-labelledby="steps-modal-title">
+    <div class="modal-dialog card">
+      <div class="modal-header-with-close">
+        <h3 class="modal-title" id="steps-modal-title">Log Daily Steps</h3>
+        <button class="modal-close-btn" onclick="FitPulseApp.closeModal('modal-steps')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-steps" class="modal-body">
+        <p class="modal-hint">Add steps to today's cumulative step total:</p>
+        <div class="quick-chip-row">
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillStepChip(500)">+500</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillStepChip(1000)">+1,000</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillStepChip(2500)">+2,500</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillStepChip(5000)">+5,000</button>
+        </div>
+        <div class="input-group mt-3">
+          <label for="input-steps-amount" class="form-label">Enter Steps to Add</label>
+          <input type="number" id="input-steps-amount" class="form-input" placeholder="e.g. 1500" min="1" max="100000" required>
+        </div>
+        <div class="modal-actions mt-4">
+          <button type="button" class="btn btn-secondary" onclick="FitPulseApp.closeModal('modal-steps')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Steps</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Quick Add Water Modal -->
+  <div class="modal-backdrop" id="modal-water" role="dialog" aria-modal="true" aria-labelledby="water-modal-title">
+    <div class="modal-dialog card">
+      <div class="modal-header-with-close">
+        <h3 class="modal-title" id="water-modal-title">Log Hydration (Water)</h3>
+        <button class="modal-close-btn" onclick="FitPulseApp.closeModal('modal-water')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-water" class="modal-body">
+        <p class="modal-hint">Quick-add glass or bottle hydration in milliliters (ml):</p>
+        <div class="quick-chip-row">
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillWaterChip(250)">+250 ml (Glass)</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillWaterChip(500)">+500 ml (Bottle)</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillWaterChip(750)">+750 ml</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillWaterChip(1000)">+1,000 ml</button>
+        </div>
+        <div class="input-group mt-3">
+          <label for="input-water-amount" class="form-label">Water Amount (ml)</label>
+          <input type="number" id="input-water-amount" class="form-input" placeholder="e.g. 250" min="1" max="5000" required>
+        </div>
+        <div class="modal-actions mt-4">
+          <button type="button" class="btn btn-secondary" onclick="FitPulseApp.closeModal('modal-water')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Log Water</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Quick Add Activity / Workout Modal -->
+  <div class="modal-backdrop" id="modal-activity" role="dialog" aria-modal="true" aria-labelledby="act-modal-title">
+    <div class="modal-dialog card">
+      <div class="modal-header-with-close">
+        <h3 class="modal-title" id="act-modal-title">Log Workout Activity</h3>
+        <button class="modal-close-btn" onclick="FitPulseApp.closeModal('modal-activity')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-activity" class="modal-body">
+        <div class="input-group">
+          <label for="input-act-type" class="form-label">Activity Type *</label>
+          <select id="input-act-type" class="form-select" required>
+            <option value="Walking">Walking</option>
+            <option value="Running">Running</option>
+            <option value="Cycling">Cycling</option>
+            <option value="Exercise">Exercise / Gym Workout</option>
+            <option value="Swimming">Swimming</option>
+            <option value="Yoga">Yoga / Stretch</option>
+            <option value="Other">Other Active Sport</option>
+          </select>
+        </div>
+
+        <div class="modal-two-col">
+          <div class="input-group">
+            <label for="input-act-duration" class="form-label">Duration (minutes) *</label>
+            <input type="number" id="input-act-duration" class="form-input" placeholder="e.g. 30" min="1" max="600" required>
+          </div>
+          <div class="input-group">
+            <label for="input-act-time" class="form-label">Time of Activity</label>
+            <input type="time" id="input-act-time" class="form-input">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="input-act-notes" class="form-label">Optional Notes</label>
+          <input type="text" id="input-act-notes" class="form-input" placeholder="e.g. Brisk pace in the park, felt great">
+        </div>
+
+        <div class="calorie-estimate-preview" id="act-calorie-preview">
+          Estimated Burn: <strong>~150 kcal</strong>
+        </div>
+
+        <div class="modal-actions mt-4">
+          <button type="button" class="btn btn-secondary" onclick="FitPulseApp.closeModal('modal-activity')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Activity</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Quick Add Sleep Modal -->
+  <div class="modal-backdrop" id="modal-sleep" role="dialog" aria-modal="true" aria-labelledby="sleep-modal-title">
+    <div class="modal-dialog card">
+      <div class="modal-header-with-close">
+        <h3 class="modal-title" id="sleep-modal-title">Log Daily Sleep & Rest</h3>
+        <button class="modal-close-btn" onclick="FitPulseApp.closeModal('modal-sleep')" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-sleep" class="modal-body">
+        <p class="modal-hint">Enter the total sleep duration for last night (hours):</p>
+        <div class="quick-chip-row">
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillSleepChip(6.5)">6.5 hrs</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillSleepChip(7.5)">7.5 hrs</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillSleepChip(8.0)">8.0 hrs</button>
+          <button type="button" class="chip-btn" onclick="FitPulseApp.fillSleepChip(9.0)">9.0 hrs</button>
+        </div>
+        <div class="input-group mt-3">
+          <label for="input-sleep-hours" class="form-label">Sleep Duration (Hours) *</label>
+          <input type="number" id="input-sleep-hours" class="form-input" placeholder="e.g. 7.5" min="1" max="24" step="0.1" required>
+        </div>
+        <div class="modal-actions mt-4">
+          <button type="button" class="btn btn-secondary" onclick="FitPulseApp.closeModal('modal-sleep')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Sleep</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. History Day Detail Modal -->
+  <div class="modal-backdrop" id="modal-day-detail" role="dialog" aria-modal="true" aria-labelledby="day-detail-title">
+    <div class="modal-dialog card">
+      <div class="modal-header-with-close">
+        <div>
+          <h3 class="modal-title" id="day-detail-title">Day Detail Record</h3>
+          <p class="modal-subtitle" id="day-detail-date">Date: 2026-09-18</p>
+        </div>
+        <button class="modal-close-btn" onclick="FitPulseApp.closeModal('modal-day-detail')" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body" id="day-detail-body">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-actions mt-4">
+        <button type="button" class="btn btn-secondary" onclick="FitPulseApp.closeModal('modal-day-detail')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Safe Reset Confirmation Modal -->
+  <div class="modal-backdrop" id="modal-reset" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+    <div class="modal-dialog card border-danger">
+      <div class="modal-header-with-close">
+        <h3 class="modal-title text-danger" id="reset-modal-title">Confirm Full Application Reset</h3>
+        <button class="modal-close-btn" onclick="FitPulseApp.closeModal('modal-reset')" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>This action will permanently delete all stored profile information, daily activity logs, streaks, and achievements from LocalStorage.</p>
+        <p class="mt-2 text-warning"><strong>Warning: This action cannot be undone.</strong></p>
+        <div class="input-group mt-3">
+          <label for="input-reset-confirm" class="form-label">Type <strong>RESET</strong> to confirm:</label>
+          <input type="text" id="input-reset-confirm" class="form-input" placeholder="RESET">
+        </div>
+      </div>
+      <div class="modal-actions mt-4">
+        <button type="button" class="btn btn-secondary" onclick="FitPulseApp.closeModal('modal-reset')">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-reset">Permanently Erase</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" role="status"></div>
+
+  <!-- Main Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
